@@ -38,7 +38,7 @@ public class BranchesDistance {
   @JsonProperty("distance")
   @Getter
   @Setter
-  private double distance = 0.;
+  private long distance = 0L;
 
   public BranchesDistance address(String address) {
     this.address = address;

@@ -30,8 +30,9 @@ public class BranchService {
       Double y1 = lon;
       Double y2 = thecClosestBranch.getLon();
 
-      final double longDistance = calcDistance(x1, x2, y1, y2);
-      thecClosestBranch.setDistance(longDistance);
+      final double calcDistance = calcDistance(x1, x2, y1, y2);
+      final long distance = (long) calcDistance;
+      thecClosestBranch.setDistance(distance);
       log.info("branch {}", thecClosestBranch);
       return thecClosestBranch;
     } else {
@@ -45,14 +46,11 @@ public class BranchService {
 
     double latDistance = Math.toRadians(x2 - x1);
     double lonDistance = Math.toRadians(y2 - y1);
+
     double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
         + Math.cos(Math.toRadians(x1)) * Math.cos(Math.toRadians(x2))
         * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
     double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    double distance = rEarth * c * 1000; // convert to meters
-
-    distance = Math.pow(distance, 2);
-
-    return Math.sqrt(distance);
+    return rEarth * c * 1000;
   }
 }

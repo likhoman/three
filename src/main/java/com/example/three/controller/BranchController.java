@@ -4,6 +4,7 @@ import com.example.three.model.Branches;
 import com.example.three.model.ErrorResponse;
 import com.example.three.repo.OfficeRepo;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,6 +14,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @RestController
+@Slf4j
 public class BranchController {
 
   private final OfficeRepo officeRepo;
@@ -35,6 +37,7 @@ public class BranchController {
 
     final Branches branch = officeRepo.findAllSellersInRange(Double.parseDouble(lat), Double.parseDouble(lon));
 
+    log.info("branch {}", branch);
     if (branch == null) {
       final ErrorResponse errorResponse = new ErrorResponse();
       errorResponse.setStatus("branch not found");

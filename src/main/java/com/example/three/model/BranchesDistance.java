@@ -163,7 +163,7 @@ public class BranchesDistance {
     sb.append("    lon: ").append(toIndentedString(lon)).append("\n");
     sb.append("    lat: ").append(toIndentedString(lat)).append("\n");
     sb.append("    address: ").append(toIndentedString(address)).append("\n");
-    sb.append("    distance: ").append(toIndentedString(title)).append("\n");
+    sb.append("    distance: ").append(toIndentedString(distance)).append("\n");
     sb.append("}");
     return sb.toString();
   }

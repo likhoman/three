@@ -6,6 +6,7 @@ import com.example.three.repo.OfficeRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
@@ -26,6 +27,20 @@ public class BranchController {
       final ErrorResponse errorResponse = new ErrorResponse();
       errorResponse.setStatus("branch not found");
       return errorResponse;
+    }
+  }
+
+  @GetMapping("/branches")
+  public Object getBranches(@RequestParam("lat") String lat, @RequestParam("lon") String lon) {
+
+    final Branches branch = officeRepo.findAllSellersInRange(Double.parseDouble(lat), Double.parseDouble(lon));
+
+    if (branch == null) {
+      final ErrorResponse errorResponse = new ErrorResponse();
+      errorResponse.setStatus("branch not found");
+      return errorResponse;
+    } else {
+      return branch;
     }
   }
 }

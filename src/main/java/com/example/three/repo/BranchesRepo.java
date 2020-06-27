@@ -6,13 +6,13 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;
 
-public interface OfficeRepo extends CrudRepository<Branches, Long> {
+public interface BranchesRepo extends CrudRepository<Branches, Long> {
 
   @Override
-  Optional<Branches> findById(Long aLong);
+  Optional<Branches> findById(Long branchId);
 
   @Query(value = "SELECT *,(ABS(lon-?1)+ABS(lat-?2)) as crd\n" +
       "FROM branches ORDER BY crd ASC limit 1;", nativeQuery = true)
-  Branches findAllSellersInRange(double longitude, double latitude);
+  Branches findThecClosestBranch(double longitude, double latitude);
 
 }

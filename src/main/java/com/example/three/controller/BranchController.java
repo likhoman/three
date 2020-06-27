@@ -1,8 +1,9 @@
 package com.example.three.controller;
 
 import com.example.three.model.Branches;
+import com.example.three.model.BranchesDistance;
 import com.example.three.model.ErrorResponse;
-import com.example.three.repo.OfficeRepo;
+import com.example.three.service.BranchService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,40 +11,34 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Optional;
-
 @RequiredArgsConstructor
 @RestController
 @Slf4j
 public class BranchController {
 
-  private final OfficeRepo officeRepo;
+  private final BranchService branchService;
 
   @GetMapping("/branches/{id}")
   public Object getBranches(@PathVariable(value = "id") Long branchId) {
 
-    final Optional<Branches> branch = officeRepo.findById(branchId);
-    if (branch.isPresent()) {
-      return branch.get();
-    } else {
-      final ErrorResponse errorResponse = new ErrorResponse();
-      errorResponse.setStatus("branch not found");
-      return errorResponse;
-    }
+    final Branches branch = branchService.getBranch(branchId);
+    return getResponse(branch);
   }
 
   @GetMapping("/branches")
-  public Object getBranches(@RequestParam("lat") String lat, @RequestParam("lon") String lon) {
+  public Object getBranches(@RequestParam("lat") Double lat, @RequestParam("lon") Double lon) {
 
-    final Branches branch = officeRepo.findAllSellersInRange(Double.parseDouble(lat), Double.parseDouble(lon));
+    final BranchesDistance branchDistance = branchService.getBranchDistance(lat, lon);
+    return getResponse(branchDistance);
+  }
 
-    log.info("branch {}", branch);
-    if (branch == null) {
+  private Object getResponse(Object branchDistance) {
+    if (branchDistance == null) {
       final ErrorResponse errorResponse = new ErrorResponse();
       errorResponse.setStatus("branch not found");
       return errorResponse;
     } else {
-      return branch;
+      return branchDistance;
     }
   }
 }
